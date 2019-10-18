@@ -1,115 +1,101 @@
+class Node<T>{
+	T data; 
+	Node next; 
+
+	public Node(Object data){
+		this.data = (T) data; 
+	}
+}
 
 
-//LinkedList class --------------------------------------
-public class LinkedList <T> implements List <T>{
+public class LinkedList <T> implements List<T>{
 
-    protected int size; 
-    Node<T> head; 
-    //Node tail; 
-   
-    
-    public LinkedList(int size){
-        this.size = 0; 
-        this.head = null;
-        //this.tail = null; 
-    }
+	Node<T> head; 
+	int size; 
 
-    public LinkedList(){
-        this(100);
-    }
+	public LinkedList(){
+		T head = null; 
+		int size = 0; 
+	}
+	
 
-    public void add(T item){
-        if(head == null){
-            head = new Node<T>(item);
-            ++size;
-            return;
-        }
-        
-        Node <T> current = head; 
-        while(current.next != null){
-            current = current.next; 
-        }
+	public void add(int pos, T item){
+		if(pos>size|| pos<0){
+			System.out.println("The position is out of bounds in the list"); 
+		}
 
-        current.next = new Node<T>(item); 
-        ++size; 
+		if(pos == 0){
+			Node<T>current = new Node<T>(item);
+			current.next = head; 
+			head = current; 
+			++size; 
+		}
+		else{
+			Node<T> current = new Node<T>(item); 
+			Node<T> prev = head; 
+			for(int i = 0; i <pos-1; i++){
+				prev = prev.next; 
+			}
+			current.next = prev.next; 
+			prev.next = current; 
+			++size; 
+		}
+	}
 
-    }
+	public void add(T item){
+		if(head == null){
+			head = new Node<T>(item); 
+			++size; 
+		}
+		else{
+			Node<T>prev = head; 
+			while(prev.next != null){
+				prev = prev.next; 
+			}
+		
+			Node<T>curr = new Node<T>(item); 
+			prev.next = curr; 
+			++size; 
 
-    public void add(int pos, T item) throws Exception {
-        if(pos > size-1 || pos < 0) {
-            throw new Exception("Invalid Position");
-        }
-        if(pos == 0){
-            Node current = new Node(item); 
-            current.next = head; 
-            head = current; 
-            ++size; 
-        }else{
-            Node current = new Node(item);
-            Node prev = head; 
-            for(int i = 0; i < pos-1; i++){
-                prev = prev.next; 
-            }
-            current.next = prev.next; 
-            prev.next = current;
-            ++size;
-        }
+		}
+	}
 
-        // Node <T> current = head; 
-        // int increment = 0;
-        // while(increment != pos-1){
-        //     ++increment;
-        //     current = current.next; 
-        // }
-        // Node <T> tempNode = current.next; 
-        // current.next = new Node<T>(item); 
-        // current.next.next = tempNode; 
-        // ++size; 
-    }
+	public T get(int pos)throws IndexOutOfBoundsException{
+		if(pos>=size||pos<0){
+			throw new IndexOutOfBoundsException("does not exist"); 
+		}
+		Node prev = head;  
+		for(int i =0; i <pos; i++){
+			prev = prev.next; 
+		}
+		return (T)prev.data; 
 
-    public T get(int pos) throws Exception {
-        if(pos > size-1|| pos < 0){
-            throw new Exception("Invalid Position"); 
-        }
+	}
 
-        Node<T> current = head; 
-        for(int i = 0; i < pos; i++){
-            current = current.next; 
-       }
-        return current.data; 
-        // Node<T> current = head; 
-        // int increment = 0; 
-        // while (increment != pos){
-        //     ++increment;
-        //     current = current.next; 
-        // }
-        
-        // return current.data; 
-    }
-
-    public T remove(int pos) throws Exception{
-        if(pos > size-1 || pos < 0){
-            throw new Exception("Invalid Position.");
-        }
-        if(pos == 0){
-            T temp = head.data;
-            head = head.next;
-            --size; 
-            return (T) temp; 
-        } 
-        Node<T> current = head; 
-
-        for(int i = 0; i < pos-1; i++){
-            current = current.next; 
-        }
-        Node<T> temp = current.next;
-        
-        current.next = current.next.next; 
-        --size;
-        return temp.data;
-    }
-
-    public int size(){
-        return size; 
-    }
+	public T remove(int pos)throws IndexOutOfBoundsException{
+		if(pos > size-1 || pos <0){
+			throw new IndexOutOfBoundsException("does not work"); 
+		}
+		if(pos == 0){
+			T item = (T) head.data; 
+			head = head.next; 
+			size--; 
+			return item; 
+		}
+		else{
+			Node prev = head; 
+			Node<T>current = prev; 
+			for(int i =0; i < pos-1; i++){
+				prev = prev.next; 
+			}
+			Node curr = prev.next;
+			T item = (T) curr.data; 
+			size--; 
+			return item; 
+		}
+	}
+	
+	public int size(){
+		return size; 
+	}
 }
