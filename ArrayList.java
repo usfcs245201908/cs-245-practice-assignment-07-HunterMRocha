@@ -1,76 +1,69 @@
-public class ArrayList <T> implements List{
+import java.util.Arrays; 
 
-    protected int size;
-    T arr[]; 
+public class ArrayList <T> implements List<T>{
+	private T[] a; 
+	private int size; 
 
-    public ArrayList(int size){
-        this.size = size; 
-        this.arr = (T[]) new Object[10];
-    }
+	public ArrayList(){
+		a = (T[]) new Object[10]; 
+		size = 0; 
+	}
 
-    public ArrayList(){
-        this(0);
-    }
+	public void add(Object item){
+		if(size == a.length){
+			growArray(); 
+		}
+		a[size++] = (T) item; 
+	}
 
-    
-    public void growArray(){
-        T tempArray[];
-        tempArray = (T[]) new Object[size*2];
-        for(int i = 0; i < arr.length; i++){
-            tempArray[i] = arr[i];
-        }
-        arr = tempArray; 
-        
-    }
+	public void add(int pos, Object item) throws IndexOutOfBoundsException{
+		if(pos < 0 || pos>size){
+			throw new IndexOutOfBoundsException("does not work"); 
+		}
 
-    public int size(){
-        return size; 
-    }
+		if(size == a.length){
+			growArray(); 
+		}
+
+		for(int i =size; i >pos; i--){
+			a[i] = a[i-1]; 
+		}
+		a[pos] = (T) item; 
+		size++; 
+	}
+
+	public T get(int pos)throws IndexOutOfBoundsException{
+		if(pos<0||pos>=size){
+			throw new IndexOutOfBoundsException("does not work"); 
+		}
+		return a[pos]; 
+	}
+
+	public T remove(int pos)throws IndexOutOfBoundsException{
+		if(pos<0 || pos>=size){
+			throw new IndexOutOfBoundsException("does not work"); 
+		}
+		T item = a[pos]; 
+		for(int i =pos; i<size-1; i++){
+			a[i] = a[i+1]; 
+		}
+		size--; 
+		return item; 
+	}
+
+	public int size(){
+		return size; 
+	}
+
+	public void growArray(){
+		int len = a.length; 
+		T[] new_array = (T[]) new Object[len*2]; 
+		for(int i = 0; i < a.length; i++){
+			new_array[i] = a[i]; 
+		}
+		a = new_array; 
+	}
 
 
-    public void add(Object item){
-        if(size == arr.length){
-            return; 
-        }
-        arr[size++] = (T) item; 
-    }
 
-    public void add(int pos, Object item) throws Exception{
-        if(pos < 0 || pos > size){
-            throw new Exception("Invalid Position.");
-        }
-        if(size == arr.length){
-            growArray();
-        }
-
-        for(int i = size-1; i > pos; i--){
-            arr[i+1] = arr[i];
-        }
-        arr[pos] = (T) item; 
-        ++size; 
-    }
-
-    public T remove(int pos) throws Exception{
-        if(pos < 0 || pos > size-1){
-            throw new Exception("Invalid Position."); 
-        }
-        if(arr.length == 0){
-            throw new Exception("Invalid Position.");
-        }
-        T temp = arr[pos];
-
-        for(int i = size-1; i > pos; i--){
-            arr[i+1] = arr[i];
-        }
-        --size; 
-        return (T) temp; 
-        
-    }
-
-    public T get(int pos) throws Exception {
-        if(pos < 0 || pos > size-1){
-            throw new Exception("Invalid Position. ");
-        }
-        return (T) arr[pos];
-    }
 }
